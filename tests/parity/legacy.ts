@@ -8,7 +8,13 @@ import { PNG } from 'pngjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 
-class FakeImageData { constructor(public data: Uint8ClampedArray, public width: number, public height: number) {} }
+class FakeImageData {
+  data: Uint8ClampedArray; width: number; height: number;
+  constructor(a: Uint8ClampedArray | number, b: number, c?: number) {
+    if (typeof a === 'number') { this.width = a; this.height = b; this.data = new Uint8ClampedArray(a * b * 4); }
+    else { this.data = a; this.width = b; this.height = c!; }
+  }
+}
 // Just enough canvas for applyImport(): it puts the tuned pixels into a canvas, then hands the canvas to raster().
 const fakeDocument = {
   createElement: () => {
@@ -25,13 +31,15 @@ export type Legacy = {
   quantizeData: Fn; removeBg: Fn; sharpen: Fn; toLab: Fn; fromLab: Fn; mcut: Fn; findRanges: Fn; rangeMap: Fn;
   familyReduce: Fn; rangeTones: Fn; deepen: Fn; adjustRanges: Fn; detailToK: Fn; setRangeSep: (v: number) => void;
   applyImport: Fn;
+  /** Component.prototype, for calling original methods with a stand-in `this`. */
+  proto: Record<string, Fn>;
 };
 
 export function loadLegacy(): Legacy {
   const src = readFileSync(root + 'legacy/recovered/app.js', 'utf8');
   const ctx = vm.createContext({ DCLogic: class {}, React: { createRef: () => ({}) }, document: fakeDocument, ImageData: FakeImageData });
   const exportsExpr = `;({ quantizeData, removeBg, sharpen, toLab, fromLab, mcut, findRanges, rangeMap, familyReduce, rangeTones, deepen,
-    adjustRanges, detailToK, setRangeSep: v => { RANGE_SEP = v; }, applyImport: Component.prototype.applyImport })`;
+    adjustRanges, detailToK, setRangeSep: v => { RANGE_SEP = v; }, applyImport: Component.prototype.applyImport, proto: Component.prototype })`;
   return new vm.Script(src + exportsExpr, { filename: 'legacy/recovered/app.js' }).runInContext(ctx) as Legacy;
 }
 

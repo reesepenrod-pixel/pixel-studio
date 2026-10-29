@@ -5,29 +5,29 @@
 Status: ✅ working & tested · 🟡 present, not verified · ⚠️ broken/limited · 🚧 in progress · ⬜ not implemented ·
 `n/a` doesn't apply. **Tests** names the check that covers it: `LB:` legacy-baseline probe, `P:` parity, `U:` unit, `E:` e2e.
 
-Last updated: 2026-10-29 (Phase 1, tasks 1.0–1.1).
+Last updated: 2026-10-29 (Phase 1, tasks 1.0–1.2).
 
-The imaging *algorithms* are ported and parity-tested (`P:` below). Their *UI* in the new app arrives in task 1.6, so the New column still shows ⬜ until it's usable.
+The imaging and drawing *algorithms* are ported and parity-tested (`P:` below). Their *UI* in the new app arrives in task 1.6, so the New column still shows ⬜ until it's usable.
 
 ## Art Studio (existing features to preserve)
 
 | Feature | Legacy | Phase | New | Tests |
 |---|---|---|---|---|
-| Pencil, 1–8 px brush, `[` `]` | ✅ | 1.5 | ⬜ | LB: pencil_stroke, brush_size_key |
-| Eraser | ✅ | 1.5 | ⬜ | LB: eraser |
-| Bucket fill | ✅ | 1.5 | ⬜ | LB: bucket_fill_and_color_input |
+| Pencil, 1–8 px brush, `[` `]` | ✅ | 1.5 | ⬜ | LB: pencil_stroke, brush_size_key; P: raster.test.ts (stamp/line) |
+| Eraser | ✅ | 1.5 | ⬜ | LB: eraser; P: raster.test.ts (stamp) |
+| Bucket fill | ✅ | 1.5 | ⬜ | LB: bucket_fill_and_color_input; P: raster.test.ts (floodFill) |
 | Dropper / Alt+click pick | ✅ | 1.5 | ⬜ | LB: alt_click_dropper |
 | Color input + hex | ✅ | 1.5 | ⬜ | LB: bucket_fill_and_color_input |
 | Recent colors | 🟡 | 1.5 | ⬜ | — |
-| Scene palette (32 most used) | ✅ | 1.5 | ⬜ | visual |
+| Scene palette (32 most used) | ✅ | 1.5 | ⬜ | visual; U: sceneColors |
 | Move layer (drag) | ✅ | 1.5 | ⬜ | LB: move_drag |
-| Resize handles, Shift ratio | 🟡 | 1.5 | ⬜ | — |
+| Resize handles, Shift ratio | 🟡 | 1.5 | ⬜ | P: raster.test.ts (scaleNearest) |
 | Arrow nudge | ✅ | 1.5 | ⬜ | LB: move_nudge_no_error |
 | Off-canvas pixel retention | 🟡 | 1.5 | ⬜ | — |
 | Integer zoom 1–12, buttons | ✅ | 1.4 | ⬜ | LB: zoom_buttons |
 | Ctrl/⌘-wheel & pinch zoom | 🟡 | 1.4 | ⬜ | — |
 | Grid overlay | ✅ | 1.4 | ⬜ | visual |
-| Layers: new / delete / visibility / opacity / merge | ✅ | 1.5 | ⬜ | LB: new_layer, delete_layer, visibility_toggle, layer_opacity, merge_down |
+| Layers: new / delete / visibility / opacity / merge | ✅ | 1.5 | ⬜ | LB: new_layer, delete_layer, visibility_toggle, layer_opacity, merge_down; P: raster.test.ts (composite) |
 | Layers: reorder, rename | 🟡 | 1.5 | ⬜ | — |
 | Layer thumbnails | ✅ | 1.5 | ⬜ | visual |
 | Selection brush / unselect | ✅ | 1.6 | ⬜ | LB: selection_copy_to_layer |

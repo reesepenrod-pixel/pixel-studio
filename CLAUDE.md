@@ -15,7 +15,7 @@ isn't hosted anywhere.
 - `docs/DECISIONS.md`: add an entry for every significant technical decision or new dependency
 
 ## Current state
-Phase 1 approved and in progress. Tasks 1.0 (scaffold) and 1.1 (imaging port) are done; next is 1.2 (raster core).
+Phase 1 approved and in progress. Tasks 1.0–1.2 are done (scaffold, imaging port, raster core); next is 1.3 (design tokens + UI kit), then 1.4–1.6 (editor port).
 The progress log is at the bottom of `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Layout
