@@ -1,0 +1,107 @@
+/* Art workspace styles, transcribed from the original Pixel Studio's inline styles. */
+.ps-root { height: 100vh; display: flex; flex-direction: column; background: #111; color: #ddd; font-family: var(--font); font-size: 11px; letter-spacing: 0.04em; }
+.ps-root button { font: inherit; color: inherit; }
+.ps-root input[type=range] { accent-color: var(--gold); width: 100%; }
+
+/* top bar */
+.ps-top { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 10px 16px; border-bottom: 2px solid #262626; }
+.ps-brand { display: flex; align-items: baseline; gap: 10px; }
+.ps-brand b { font-size: 14px; font-weight: 700; color: #f2ecd8; letter-spacing: 0.1em; }
+.ps-brand span { color: #777; }
+.ps-group { display: flex; gap: 4px; align-items: center; }
+.ps-tb { padding: 6px 10px; background: #1c1c1c; border: 2px solid #333; color: #ddd; cursor: pointer; }
+.ps-tb.on { background: #ddd; color: #111; }
+.ps-tb.view { letter-spacing: 0.1em; padding: 6px 14px; }
+.ps-tb.sq { width: 30px; padding: 6px 0; }
+.ps-tb.dim { opacity: 0.4; }
+.ps-zoom { min-width: 44px; text-align: center; color: #bbb; }
+.ps-spacer { flex: 1; }
+
+/* main grid */
+.ps-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 84px minmax(0, 1fr) 270px; }
+.ps-rail { border-right: 2px solid #262626; padding: 10px 8px; display: flex; flex-direction: column; gap: 6px; }
+.ps-tool { font-size: 9px !important; letter-spacing: 0.08em; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 0 6px; border: 2px solid #2e2e2e; cursor: pointer; background: #1a1a1a; color: #bbb !important; }
+.ps-tool.on { border-color: #f2ecd8; background: #f2ecd8; color: #1a1410 !important; }
+.ps-tool svg { width: 24px; height: 24px; display: block; }
+
+.ps-center { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.ps-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; background: #0c0c0c; touch-action: none; }
+.ps-pad { margin: auto; padding: 24px; }
+.ps-stage { position: relative; background-color: #262626; background-image: conic-gradient(#303030 25%, #262626 0 50%, #303030 0 75%, #262626 0); box-shadow: 0 0 0 2px #2c2c2c; }
+.ps-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ps-stage canvas.main { image-rendering: pixelated; }
+.ps-stage canvas.overlay { pointer-events: none; }
+.ps-stage canvas.cursor { touch-action: none; }
+.ps-status { display: flex; flex-wrap: wrap; gap: 18px; padding: 7px 16px; border-top: 2px solid #262626; color: #888; }
+.ps-status .flash { color: #ffd86e; }
+.ps-status .idle { color: #777; }
+.ps-save.error { color: #e86a5a; }
+.ps-save.saving, .ps-save.saved { color: #555; }
+
+/* right panel */
+.ps-panel { border-left: 2px solid #262626; overflow: auto; display: flex; flex-direction: column; }
+.ps-sec { border-bottom: 2px solid #262626; display: flex; flex-direction: column; }
+.ps-sec-head { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 11px 14px; background: transparent; border: 0; cursor: pointer; text-align: left; color: #ddd; }
+.ps-sec-head.open { background: #141414; }
+.ps-sec-head:hover { background: #181818; }
+.ps-sec-head .t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ps-sec-head .t b { color: #f2ecd8; letter-spacing: 0.14em; font-size: 10px; font-weight: 400; }
+.ps-sec-head .t span { color: #6a6a6a; font-size: 8px; letter-spacing: 0.06em; line-height: 1.5; }
+.ps-sec-head .c { color: #888; font-size: 10px; padding-top: 1px; }
+.ps-sec-body { padding: 2px 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.ps-col { display: flex; flex-direction: column; gap: 6px; }
+.ps-col8 { display: flex; flex-direction: column; gap: 8px; }
+.ps-divide { border-top: 2px solid #1e1e1e; padding-top: 10px; }
+.ps-lab { display: flex; justify-content: space-between; color: #777; font-size: 9px; letter-spacing: 0.1em; }
+.ps-lab.big { color: #888; letter-spacing: 0.14em; font-size: 10px; }
+.ps-lab.small { font-size: 8px; }
+.ps-lab .v { color: #f2ecd8; text-align: right; }
+.ps-lab .v.gold { color: #ffd86e; }
+.ps-ends { display: flex; justify-content: space-between; color: #555; font-size: 8px; letter-spacing: 0.1em; }
+.ps-note { color: #666; font-size: 8px; letter-spacing: 0.06em; }
+.ps-note.n9 { font-size: 9px; line-height: 1.5; letter-spacing: 0.04em; }
+.ps-note.dim { color: #555; letter-spacing: 0.08em; }
+.ps-cap { color: #666; font-size: 9px; letter-spacing: 0.12em; }
+.ps-cap.c7 { color: #777; letter-spacing: 0.1em; }
+
+.ps-btn { padding: 6px; background: #1c1c1c; color: #ddd !important; border: 2px solid #333; cursor: pointer; font-size: 10px !important; }
+.ps-btn.s9 { font-size: 9px !important; padding: 6px 0; }
+.ps-btn.s9p7 { font-size: 9px !important; padding: 7px 0; }
+.ps-btn.p7 { padding: 7px; }
+.ps-btn.on { background: #ddd; color: #111 !important; }
+.ps-btn.danger { color: #e89a8a !important; }
+.ps-btn.cream, .ps-btn.gold { letter-spacing: 0.08em; padding: 9px; border: 0; font-weight: 700; color: #1a1410 !important; font-size: 11px !important; }
+.ps-btn.cream { background: #f2ecd8; }
+.ps-btn.gold { background: #ffd86e; }
+.ps-btn.gold.small { font-size: 10px !important; padding: 8px 0; }
+.ps-btn.plain { font-size: 11px !important; letter-spacing: 0.08em; padding: 8px; }
+.ps-toggle { font-size: 9px !important; letter-spacing: 0.1em; display: flex; justify-content: space-between; padding: 7px 8px; background: #1c1c1c; color: #bbb !important; border: 2px solid #333; cursor: pointer; }
+.ps-toggle .on { color: #ffd86e; }
+.ps-toggle .off { color: #666; }
+.ps-link { font-size: 8px !important; letter-spacing: 0.1em; background: none; border: 0; color: #666 !important; cursor: pointer; padding: 0; text-align: left; }
+.ps-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.ps-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.ps-grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.ps-swatches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.ps-swatch { aspect-ratio: 1; border: 0; padding: 0; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+.ps-swatch.on { box-shadow: 0 0 0 2px #111, 0 0 0 4px #f2ecd8; }
+.ps-tones { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 6px; }
+.ps-tone { display: flex; height: 22px; padding: 2px; border: 0; cursor: pointer; background: #1c1c1c; box-shadow: inset 0 0 0 1px #333; }
+.ps-tone.on { box-shadow: 0 0 0 2px #111, 0 0 0 4px #f2ecd8; }
+.ps-tone.edit { box-shadow: 0 0 0 2px #111, 0 0 0 4px #ffd86e; }
+.ps-tone.mod { box-shadow: 0 0 0 2px #111, 0 0 0 3px #888; }
+.ps-tone div { flex: 1; height: 100%; }
+.ps-tone-all { font-size: 9px !important; height: 22px; padding: 0; border: 2px solid #333; cursor: pointer; background: #1c1c1c; color: #bbb !important; }
+.ps-tone-all.on { background: #ddd; color: #111 !important; }
+.ps-color { display: flex; gap: 10px; align-items: center; }
+.ps-color label { position: relative; width: 44px; height: 44px; flex-shrink: 0; box-shadow: 0 0 0 2px #444; cursor: pointer; }
+.ps-color input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.ps-color .hex { color: #f2ecd8; font-size: 13px; }
+.ps-color .hint { color: #777; font-size: 9px; }
+.ps-layers { display: flex; flex-direction: column; gap: 3px; }
+.ps-layer { display: flex; align-items: center; gap: 8px; padding: 4px 6px; cursor: pointer; }
+.ps-layer.on { background: #2a2620; box-shadow: inset 0 0 0 2px #ffd86e; }
+.ps-eye { font-size: 9px !important; width: 30px; padding: 3px 0; background: none; border: 2px solid #3a3a3a; cursor: pointer; }
+.ps-thumb { width: 48px; height: 30px; flex-shrink: 0; background-color: #262626; image-rendering: pixelated; }
+.ps-lname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-lname input { font: inherit; width: 100%; background: #111; color: #f2ecd8; border: 1px solid #ffd86e; padding: 1px 3px; letter-spacing: inherit; }
