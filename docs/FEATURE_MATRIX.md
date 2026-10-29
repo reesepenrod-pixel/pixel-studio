@@ -35,6 +35,7 @@ The imaging *algorithms* are ported and parity-tested (`P:` below). Their *UI* i
 | Clip selection to layer, select layer / invert / clear | 🟡 | 1.6 | ⬜ | — |
 | Import & pixelate (file) | ✅ | 1.6 | ⬜ | LB: import_pixelate |
 | Import via drag-and-drop | 🟡 | 1.6 | ⬜ | — |
+| Import pixel grid choice 1× / 2× | ✅ | — | removed by owner (D-015); imports fit at 1× | — |
 | Import PNG exact | ✅ | 1.6 | ⬜ | LB: import_png_exact |
 | Remove solid background | ✅ | 1.6 | ⬜ | LB: import_exact_pixels_and_rm_bg; P: imaging.test.ts |
 | Trim transparent edges | 🟡 | 1.6 | ⬜ | U: trim.test.ts |

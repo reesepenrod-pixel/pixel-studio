@@ -58,3 +58,13 @@ Dev-only: `pngjs` decodes PNGs in parity tests (Node has no canvas). It isn't sh
 
 ## D-013 · Parity testing against the original code · Accepted · 2026-10-29
 Parity tests load the *original* functions from `legacy/recovered/app.js` in a Node `vm` sandbox, including `Component.prototype.applyImport` with a stand-in `this`, and require byte-identical output from the port on real artwork. That's stronger than golden files (no fixtures to regenerate), and it keeps the original as the specification.
+
+## D-014 · Work reaches `main` through milestone pull requests · Accepted · 2026-10-29
+Owner's choice. Claude works on a branch and opens a pull request per meaningful milestone (not per small task). The owner merges. Claude never pushes to `main` directly.
+
+## D-015 · Drop the "2× game grid" import option · Accepted · 2026-10-29
+Owner's request, following D-010 (320×200 default). The IMPORT section's PIXEL GRID buttons (`1× · 320×200` / `2× · GAME GRID`) are removed, and imports fit at 1×, one image pixel per project pixel. Kept, because they aren't that button:
+- the sample dock scene (160×100 art) still loads scaled 2× to fill a 320×200 canvas;
+- tuning an existing layer still detects art drawn in 2×2 blocks and keeps it chunky (`beginAdjust`).
+
+The parity-tested algorithms are unaffected.

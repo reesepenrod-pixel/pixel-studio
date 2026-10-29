@@ -86,4 +86,4 @@ spec §56 (end of Phase 3).
 - ~~Q2. Existing artwork.~~ **Answered: nothing to carry over.** Task 1.13 stays as a general "import layers from PNGs" feature, not a migration requirement.
 - **Q3. Claude Design.** (Not objected to; proceeding.) After migration the editor UI can't be edited in Claude Design any more. OK?
 - **Q4. Dependencies.** (Approved with the plan.) OK to add `zustand`, `immer`, `idb`, `fflate`, `zod` (all small and well maintained)?
-- **Q5. Git workflow.** Work on a branch and merge to `main` via pull requests per task, or commit directly to `main`?
+- ~~Q5. Git workflow.~~ **Answered: milestone pull requests** (D-014).

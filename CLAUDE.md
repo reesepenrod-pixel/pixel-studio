@@ -48,4 +48,7 @@ Any change under `src/core/imaging` (or later ported code) must keep `tests/pari
 ## Workflow
 1. For each task: inspect relevant code → explain the change → implement → add or update tests → run checks → update docs.
 2. Report honestly using these words: *implemented*, *tested*, *partially implemented*, *planned*, *blocked*. Don't say "done" for scaffolding.
-3. Meaningful commits per milestone. Never force-push or rewrite history. Don't push to `main` unless the owner has said that's the workflow (open question Q5).
+3. Meaningful commits per task. Never force-push or rewrite history. **Never push to `main`.** Work on a branch and open a pull request per milestone; the owner merges (D-014).
+
+## Owner decisions so far
+320×200 default resolution (D-010) · no legacy artwork to migrate · milestone PRs (D-014) · the 2× import grid option is removed (D-015).
