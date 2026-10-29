@@ -5,7 +5,9 @@
 Status: ✅ working & tested · 🟡 present, not verified · ⚠️ broken/limited · 🚧 in progress · ⬜ not implemented ·
 `n/a` doesn't apply. **Tests** names the check that covers it: `LB:` legacy-baseline probe, `P:` parity, `U:` unit, `E:` e2e.
 
-Last updated: 2026-10-29 (Phase 0).
+Last updated: 2026-10-29 (Phase 1, tasks 1.0–1.1).
+
+The imaging *algorithms* are ported and parity-tested (`P:` below). Their *UI* in the new app arrives in task 1.6, so the New column still shows ⬜ until it's usable.
 
 ## Art Studio (existing features to preserve)
 
@@ -34,15 +36,15 @@ Last updated: 2026-10-29 (Phase 0).
 | Import & pixelate (file) | ✅ | 1.6 | ⬜ | LB: import_pixelate |
 | Import via drag-and-drop | 🟡 | 1.6 | ⬜ | — |
 | Import PNG exact | ✅ | 1.6 | ⬜ | LB: import_png_exact |
-| Remove solid background | ✅ | 1.6 | ⬜ | LB: import_exact_pixels_and_rm_bg |
-| Trim transparent edges | 🟡 | 1.6 | ⬜ | — |
-| Palette complexity | ✅ | 1.1/1.6 | ⬜ | LB: palette_complexity_reduces_colors |
-| Tones per range / range separation | 🟡 | 1.1/1.6 | ⬜ | — |
-| Sharpen + tame highlights | 🟡 | 1.1/1.6 | ⬜ | — |
-| Deepen shadows (+ per range) | 🟡 | 1.1/1.6 | ⬜ | — |
-| Material-range detection | ✅ | 1.1/1.6 | ⬜ | LB: ranges_detected |
-| Recolor ranges (hue) | ✅ | 1.1/1.6 | ⬜ | LB: recolor_hue_shift |
-| Recolor ranges (brightness / saturation / multi / reset) | 🟡 | 1.1/1.6 | ⬜ | — |
+| Remove solid background | ✅ | 1.6 | ⬜ | LB: import_exact_pixels_and_rm_bg; P: imaging.test.ts |
+| Trim transparent edges | 🟡 | 1.6 | ⬜ | U: trim.test.ts |
+| Palette complexity | ✅ | 1.1/1.6 | ⬜ | LB: palette_complexity_reduces_colors; P: imaging.test.ts |
+| Tones per range / range separation | 🟡 | 1.1/1.6 | ⬜ | P: imaging.test.ts |
+| Sharpen + tame highlights | 🟡 | 1.1/1.6 | ⬜ | P: imaging.test.ts |
+| Deepen shadows (+ per range) | 🟡 | 1.1/1.6 | ⬜ | P: imaging.test.ts |
+| Material-range detection | ✅ | 1.1/1.6 | ⬜ | LB: ranges_detected; P: imaging.test.ts |
+| Recolor ranges (hue) | ✅ | 1.1/1.6 | ⬜ | LB: recolor_hue_shift; P: imaging.test.ts |
+| Recolor ranges (brightness / saturation / multi / reset) | 🟡 | 1.1/1.6 | ⬜ | P: imaging.test.ts |
 | Adjust existing layer | ✅ | 1.6 | ⬜ | LB: undo_reverts_tuning |
 | Undo / redo (60) | ✅ | 1.7 | ⬜ | LB: undo, redo |
 | Export PNG composite 1/2/4/8× | ✅ | 1.5 | ⬜ | LB: export_png |

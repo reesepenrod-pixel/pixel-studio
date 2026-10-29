@@ -15,15 +15,24 @@ isn't hosted anywhere.
 - `docs/DECISIONS.md`: add an entry for every significant technical decision or new dependency
 
 ## Current state
-Phase 0 (audit and architecture) is complete. Phase 1 is **awaiting the owner's approval**.
-Don't start the migration until the plan is approved.
+Phase 1 approved and in progress. Tasks 1.0 (scaffold) and 1.1 (imaging port) are done; next is 1.2 (raster core).
+The progress log is at the bottom of `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Layout
 - `Pixel Studio.html`: the original app. **Never edit it.** It's the reference implementation.
 - `legacy/recovered/`: readable source extracted from it (`app.js` = all logic, `template.html` = UI markup, `assets/`). Regenerate with `python3 -I tools/unbundle.py "Pixel Studio.html" <outdir>`.
-- `tests/legacy-baseline/`: Playwright probes run against the original HTML, the behavior baseline for the port.
-  Run: `NODE_PATH=$(npm root -g) node tests/legacy-baseline/probe-core.js "Pixel Studio.html" <screenshot-dir>`.
-- Planned `src/` layout: ARCHITECTURE §4.
+- `src/`: the new app (layout in ARCHITECTURE §4). `src/core/imaging` is the ported image pipeline.
+- `tests/unit`, `tests/parity` (port vs. original, byte for byte), `tests/e2e` (Playwright on the new app), `tests/legacy-baseline` (Playwright on the original HTML; 30 pass + 1 known defect).
+
+## Commands
+- `npm run dev`: dev server at http://localhost:5173
+- `npm run check`: typecheck + unit + parity. Run before every commit.
+- `npm run e2e`: browser tests against the new app
+- `npm run build`: production build into `dist/`
+- `npm run legacy:baseline`: browser probes against the original `Pixel Studio.html`
+
+## Parity rule
+Any change under `src/core/imaging` (or later ported code) must keep `tests/parity` green. Never edit a parity test to make it pass. If behavior is meant to change, say so, add a separate test for the new behavior, and record it in DECISIONS.
 
 ## Rules
 - **Preserve working features.** Port first, improve second. Don't simplify or drop legacy behavior. If something truly can't be kept, say so and propose a replacement.

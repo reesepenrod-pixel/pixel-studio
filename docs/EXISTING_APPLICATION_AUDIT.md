@@ -213,6 +213,7 @@ fails too**, so all work after that point is lost on reload with no indication.
 - Rename uses `window.prompt` (blocking, unstyled).
 - `GAME PX` readout hard-codes the 2× relation.
 - Full-canvas recomposite on every stroke segment.
+- Material-range clustering (`findRanges`) is roughly cubic in the number of distinct colors: about 20–50 s for a synthetic image with a few thousand unique colors (found while writing parity tests). Real pixel art (tens to hundreds of colors) is instant, but a busy photo tuned at 1× could stall the tab. Optimize after the port, keeping parity tests as the guard.
 
 ### 4.3 Accessibility gaps
 11 px uppercase pixel font throughout; layer rows are clickable `<div>`s; tool icons are CSS

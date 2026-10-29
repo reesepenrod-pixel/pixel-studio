@@ -5,7 +5,7 @@ Status legend: ✅ Done · 🔄 In progress · ⏸ Awaiting approval · ⬜ Not 
 | Phase | Goal | Status |
 |---|---|---|
 | 0 | Audit and architecture | ✅ (this document set) |
-| 1 | Foundation: migrate the editor, project model, persistence | ⏸ awaiting approval |
+| 1 | Foundation: migrate the editor, project model, persistence | 🔄 in progress (approved 2026-10-29) |
 | 1.5 | Art Studio extensions (line/rect/ellipse, palettes, transforms…) | ⬜ |
 | 2 | Minimal Scene Builder: two scenes, hotspot transition, Play | ⬜ |
 | 3 | Core interactivity: objects, states, events, inventory, dialogue, vertical slice | ⬜ |
@@ -26,7 +26,7 @@ behavior, on top of a real project model with reliable local persistence and por
 
 **Phase acceptance criteria** (from spec §41, made checkable):
 - [ ] Legacy baseline browser checks pass against the new Art workspace, the same 30 that pass on the original.
-- [ ] Ported imaging algorithms produce byte-identical output to the originals (parity suite).
+- [x] Ported imaging algorithms produce byte-identical output to the originals (parity suite: 57 tests, incl. the full tuning pipeline on the dock art; verified to fail on a one-constant change).
 - [ ] A project can be created, artwork drawn, the page reloaded, and the project reopened intact.
 - [ ] Art assets have stable ids that survive reload, rename, export/import.
 - [ ] A project survives export → delete → import with identical pixels and metadata.
@@ -39,8 +39,8 @@ Each task is one commit (or a small series), independently testable, and leaves 
 
 | # | Task | Depends on | Done when | Risk |
 |---|---|---|---|---|
-| 1.0 | **Scaffold**: Vite + React + TS strict, Vitest, Playwright, `npm run dev/check/e2e/build`, CI-less local scripts, import-boundary lint rule (`engine` ↛ editor/React) | — | empty app builds; a sample unit test, a parity smoke test and an e2e smoke test run | low |
-| 1.1 | **Port pure imaging algorithms** to `src/core/imaging/*.ts`: quantizeData, removeBg, sharpen, OKLab, mcut, findRanges (with `rangeSep` as a parameter instead of a global), familyReduce, rangeTones, deepen, adjustRanges, detailToK, trim | 1.0 | parity tests: original (loaded from `legacy/recovered/app.js`) vs. port give identical bytes on the 5 dock layers and synthetic images | **med**: color math drift |
+| 1.0 ✅ | **Scaffold**: Vite + React + TS strict, Vitest, Playwright, `npm run dev/check/e2e/build`, CI-less local scripts, import-boundary lint rule (`engine` ↛ editor/React) | — | empty app builds; a sample unit test, a parity smoke test and an e2e smoke test run | low |
+| 1.1 ✅ | **Port pure imaging algorithms** to `src/core/imaging/*.ts`: quantizeData, removeBg, sharpen, OKLab, mcut, findRanges (with `rangeSep` as a parameter instead of a global), familyReduce, rangeTones, deepen, adjustRanges, detailToK, trim | 1.0 | parity tests: original (loaded from `legacy/recovered/app.js`) vs. port give identical bytes on the 5 dock layers and synthetic images | **med**: color math drift |
 | 1.2 | **Raster core** `src/core/raster`: `Raster {w,h,data}`, stamp, Bresenham line, flood fill, mask stamp, layer-with-offset compositor generalized from 320×200 | 1.0 | unit + parity tests (compositor vs. legacy at 320×200); works for arbitrary sizes | low |
 | 1.3 | **Design tokens + shared UI kit**: `tokens.css` (exact legacy colors, Silkscreen, spacing), `Section` (collapsible with caption), `Slider`, `ToggleRow`, `SegButton`, `Swatch`, pixel icons | 1.0 | visual check against legacy screenshot | low |
 | 1.4 | **PixelViewport** component: 3 stacked canvases, integer zoom 1–12, auto-fit, ctrl-wheel/pinch zoom at pointer, grid overlay, cursor preview, pointer → pixel mapping | 1.2, 1.3 | e2e: zoom, grid, coordinate readout | med |
@@ -76,6 +76,10 @@ Broken down at the start of each phase. The first gameplay milestone is the vert
 spec §56 (end of Phase 3).
 
 ---
+
+### Progress log
+- **2026-10-29 · 1.0 done.** Vite 8 + React 18.3.1 + TS 5.9 strict, Vitest 5, Playwright 1.63. `npm run dev | check | e2e | build | legacy:baseline`. The import-boundary rule is a unit test (`tests/unit/boundaries.test.ts`), with no ESLint needed. The app shell is a placeholder that says so.
+- **2026-10-29 · 1.1 done.** `src/core/imaging/*` ported, plus `runTuning()` (the original `applyImport` as a pure function). Byte-identical to the original on all 5 dock layers, a 5-layer strip, and synthetic images. Changes from the original: range separation is a parameter instead of a module global; the unused `passes = 0` smoothing loop and unused parameters were dropped; `trimImage` now works on raw RGBA (`trimTransparent`, unit-tested).
 
 ## Open questions for the owner
 - **Q1. Game resolution default.** The current art uses a 160×100 game grid shown at 2× on a 320×200 canvas. Should new projects default to **160×100** or **320×200**? (Both will be available.)
