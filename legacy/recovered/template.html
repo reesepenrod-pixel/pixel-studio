@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<script src="be09a312-5cf7-48c2-9e3c-22a8b3f96d48"></script>
+</head>
+<body>
+
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* latin-ext */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("59ab2775-284f-4b04-bc73-b3c1c33056d5") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("dc40b80a-ece6-478a-b99d-43959637dd23") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fb4b22f1-893c-4554-acb6-7d04370540f9") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("a646d266-6641-4369-b889-c87ca31e5281") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>html,body{margin:0;background:#111;overscroll-behavior:none;}a{color:#ddd}a:hover{color:#fff}input[type=range]{accent-color:#ffd86e;width:100%;}</style>
+</helmet>
+<div data-screen-label="Pixel Studio" style="height:100vh;display:flex;flex-direction:column;background:#111;color:#ddd;font-family:'Silkscreen',ui-monospace,monospace;font-size:11px;letter-spacing:0.04em;">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:10px 16px;border-bottom:2px solid #262626;">
+    <div style="display:flex;align-items:baseline;gap:10px;">
+      <div style="font-size:14px;font-weight:700;color:#f2ecd8;letter-spacing:0.1em;">PIXEL STUDIO</div>
+      <div style="color:#777;">320 × 200</div>
+    </div>
+    <div style="display:flex;gap:4px;">
+      <sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+        <button sc-camel-on-click="{{ v.on }}" style="font:inherit;letter-spacing:0.1em;padding:6px 14px;border:2px solid #333;cursor:pointer;background:{{ v.bg }};color:{{ v.fg }};">{{ v.label }}</button>
+      </sc-for>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <button sc-camel-on-click="{{ doUndo }}" title="Undo (Ctrl+Z)" style="font:inherit;padding:6px 10px;background:#1c1c1c;border:2px solid #333;color:#ddd;cursor:pointer;opacity:{{ undoOp }};">UNDO</button>
+      <button sc-camel-on-click="{{ doRedo }}" title="Redo (Ctrl+Shift+Z)" style="font:inherit;padding:6px 10px;background:#1c1c1c;border:2px solid #333;color:#ddd;cursor:pointer;opacity:{{ redoOp }};">REDO</button>
+    </div>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <button sc-camel-on-click="{{ zoomOut }}" aria-label="Zoom out" style="font:inherit;width:30px;padding:6px 0;background:#1c1c1c;border:2px solid #333;color:#ddd;cursor:pointer;">−</button>
+      <div style="min-width:44px;text-align:center;color:#bbb;">{{ zoomLabel }}</div>
+      <button sc-camel-on-click="{{ zoomIn }}" aria-label="Zoom in" style="font:inherit;width:30px;padding:6px 0;background:#1c1c1c;border:2px solid #333;color:#ddd;cursor:pointer;">+</button>
+      <button sc-camel-on-click="{{ toggleGrid }}" style="font:inherit;padding:6px 10px;border:2px solid #333;cursor:pointer;background:{{ gridBg }};color:{{ gridFg }};">GRID</button>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;display:grid;grid-template-columns:84px minmax(0,1fr) 270px;">
+    <div style="border-right:2px solid #262626;padding:10px 8px;display:flex;flex-direction:column;gap:6px;">
+      <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4">
+        <button sc-camel-on-click="{{ t.on }}" title="{{ t.hint }}" style="font:inherit;font-size:9px;letter-spacing:0.08em;display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0 6px;border:2px solid {{ t.bd }};cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};">
+          <div style="width:24px;height:24px;background-image:{{ t.icon }};background-size:100% 100%;image-rendering:pixelated;"></div>
+          <div>{{ t.label }}</div>
+        </button>
+      </sc-for>
+    </div>
+    <div style="min-width:0;min-height:0;display:flex;flex-direction:column;">
+      <div ref="{{ scrollRef }}" sc-camel-on-drag-over="{{ onDragOver }}" sc-camel-on-drop="{{ onDrop }}" sc-camel-on-pointer-down="{{ onDown }}" sc-camel-on-pointer-move="{{ onMove }}" sc-camel-on-pointer-up="{{ onUp }}" sc-camel-on-pointer-cancel="{{ onUp }}" sc-camel-on-pointer-leave="{{ onLeave }}" sc-camel-on-context-menu="{{ noMenu }}" style="flex:1;min-height:0;overflow:auto;display:flex;background:#0c0c0c;touch-action:none;">
+        <div style="margin:auto;padding:24px;">
+          <div style="position:relative;width:{{ cw }};height:{{ ch }};background-color:#262626;background-image:conic-gradient(#303030 25%, #262626 0 50%, #303030 0 75%, #262626 0);background-size:{{ chk }};box-shadow:0 0 0 2px #2c2c2c;">
+            <canvas ref="{{ mainRef }}" width="320" height="200" style="position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;display:block;"></canvas>
+            <canvas ref="{{ ovRef }}" width="{{ ovW }}" height="{{ ovH }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
+            <canvas ref="{{ curRef }}" width="{{ ovW }}" height="{{ ovH }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;cursor:{{ cursorCss }};touch-action:none;"></canvas>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:18px;padding:7px 16px;border-top:2px solid #262626;color:#888;">
+        <div>{{ posText }}</div>
+        <div>{{ gamePosText }}</div>
+        <div style="flex:1;"></div>
+        <div style="color:{{ statusColor }};">{{ statusText }}</div>
+      </div>
+    </div>
+    <div style="border-left:2px solid #262626;overflow:auto;display:flex;flex-direction:column;">
+      <sc-if value="{{ isPaint }}" hint-placeholder-val="{{ true }}">
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.color.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.color.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">COLOR &amp; BRUSH</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">WHAT THE PENCIL PAINTS · ALT+CLICK CANVAS TO PICK A COLOR</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.color.caret }}</div></button>
+        <sc-if value="{{ sec.color.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <label style="position:relative;width:44px;height:44px;flex-shrink:0;background:{{ color }};box-shadow:0 0 0 2px #444;cursor:pointer;">
+              <input type="color" value="{{ color }}" sc-camel-on-change="{{ onColor }}" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
+            </label>
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <div style="color:#f2ecd8;font-size:13px;">{{ colorHex }}</div>
+              <div style="color:#777;font-size:9px;">CLICK SWATCH TO EDIT · ALT+CLICK CANVAS TO PICK</div>
+            </div>
+          </div>
+          <sc-if value="{{ hasRecent }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#666;font-size:9px;letter-spacing:0.12em;">RECENT</div>
+            <div style="display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:4px;">
+              <sc-for list="{{ recent }}" as="s" hint-placeholder-count="4">
+                <button sc-camel-on-click="{{ s.on }}" title="{{ s.c }}" style="aspect-ratio:1;border:0;padding:0;cursor:pointer;background:{{ s.c }};box-shadow:{{ s.ring }};"></button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="color:#666;font-size:9px;letter-spacing:0.12em;">IN THE SCENE</div>
+          <div style="display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:4px;">
+            <sc-for list="{{ palette }}" as="s" hint-placeholder-count="16">
+              <button sc-camel-on-click="{{ s.on }}" title="{{ s.c }}" style="aspect-ratio:1;border:0;padding:0;cursor:pointer;background:{{ s.c }};box-shadow:{{ s.ring }};"></button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid #1e1e1e;padding-top:10px;">
+            <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>BRUSH SIZE</div><div style="color:#f2ecd8;">{{ sizeLabel }}</div></div>
+            <input type="range" min="1" max="8" step="1" value="{{ size }}" sc-camel-on-change="{{ onSize }}">
+            <div style="color:#666;font-size:8px;letter-spacing:0.06em;">[ AND ] TO RESIZE · PENCIL + ERASER</div>
+          </div>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+      <sc-if value="{{ isClip }}" hint-placeholder-val="{{ false }}">
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.clip.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.clip.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">SELECTION</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">PAINT OVER PIXELS, THEN CLIP OR COPY THEM TO A NEW LAYER</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.clip.caret }}</div></button>
+        <sc-if value="{{ sec.clip.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;color:#888;letter-spacing:0.14em;font-size:10px;"><div>SELECTION BRUSH</div><div style="color:#f2ecd8;">{{ selSizeLabel }}</div></div>
+            <input type="range" min="1" max="24" step="1" value="{{ selSize }}" sc-camel-on-change="{{ onSelSize }}">
+            <div style="color:#666;font-size:9px;line-height:1.5;">PAINT OVER PIXELS ON THE ACTIVE LAYER, THEN CLIP THEM INTO THEIR OWN LAYER.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;color:#888;letter-spacing:0.14em;font-size:10px;"><div>SELECTION</div><div style="color:#ffd86e;">{{ selCountLabel }}</div></div>
+            <button sc-camel-on-click="{{ clipToLayer }}" style="font:inherit;letter-spacing:0.08em;padding:9px;background:#ffd86e;color:#1a1410;border:0;cursor:pointer;font-weight:700;opacity:{{ selOp }};">CLIP TO NEW LAYER</button>
+            <button sc-camel-on-click="{{ copyToLayer }}" style="font:inherit;letter-spacing:0.08em;padding:8px;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;opacity:{{ selOp }};">COPY TO NEW LAYER</button>
+            <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:4px;">
+              <button sc-camel-on-click="{{ selLayer }}" title="Select every pixel on the active layer" style="font:inherit;font-size:9px;padding:7px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">LAYER</button>
+              <button sc-camel-on-click="{{ selInvert }}" style="font:inherit;font-size:9px;padding:7px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">INVERT</button>
+              <button sc-camel-on-click="{{ selClear }}" style="font:inherit;font-size:9px;padding:7px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">CLEAR</button>
+            </div>
+          </div>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.layers.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.layers.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">LAYERS</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">ORDER, VISIBILITY AND OPACITY OF EACH LAYER</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.layers.caret }}</div></button>
+        <sc-if value="{{ sec.layers.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <button sc-camel-on-click="{{ newLayer }}" style="font:inherit;font-size:10px;padding:6px;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">+ NEW LAYER</button>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <sc-for list="{{ layerRows }}" as="l" hint-placeholder-count="5">
+            <div sc-camel-on-click="{{ l.select }}" sc-camel-on-double-click="{{ l.rename }}" title="Double-click to rename" style="display:flex;align-items:center;gap:8px;padding:4px 6px;cursor:pointer;background:{{ l.bg }};box-shadow:{{ l.ring }};">
+              <button sc-camel-on-click="{{ l.toggle }}" aria-label="Toggle visibility" style="font:inherit;font-size:9px;width:30px;padding:3px 0;background:none;border:2px solid #3a3a3a;cursor:pointer;color:{{ l.eyeFg }};">{{ l.eye }}</button>
+              <div style="width:48px;height:30px;flex-shrink:0;background-color:#262626;background-image:{{ l.thumb }};background-size:100% 100%;image-rendering:pixelated;opacity:{{ l.op }};"></div>
+              <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:{{ l.fg }};">{{ l.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px;">
+          <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>LAYER OPACITY</div><div style="color:#f2ecd8;">{{ layerOpacityLabel }}</div></div>
+          <input type="range" min="0" max="100" step="1" value="{{ layerOpacity }}" sc-camel-on-pointer-down="{{ opStart }}" sc-camel-on-change="{{ onLayerOpacity }}">
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:4px;">
+          <button sc-camel-on-click="{{ layerUp }}" style="font:inherit;font-size:9px;padding:6px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">UP</button>
+          <button sc-camel-on-click="{{ layerDown }}" style="font:inherit;font-size:9px;padding:6px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">DOWN</button>
+          <button sc-camel-on-click="{{ mergeDown }}" title="Merge into layer below" style="font:inherit;font-size:9px;padding:6px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">MERGE</button>
+          <button sc-camel-on-click="{{ delLayer }}" style="font:inherit;font-size:9px;padding:6px 0;background:#1c1c1c;color:#e89a8a;border:2px solid #333;cursor:pointer;">DEL</button>
+        </div>
+          <div style="color:#555;font-size:8px;letter-spacing:0.06em;">DOUBLE-CLICK A LAYER TO RENAME</div>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ isPaint }}" hint-placeholder-val="{{ true }}">
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.import.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.import.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">IMPORT</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">BRING AN IMAGE IN AS A NEW LAYER — PIXELATED OR EXACT</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.import.caret }}</div></button>
+        <sc-if value="{{ sec.import.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <input ref="{{ fileRef }}" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,.png,.jpg,.jpeg,.gif,.webp,.bmp" sc-camel-on-change="{{ onFile }}" style="display:none;">
+          <input ref="{{ pngRef }}" type="file" accept="image/png,.png" sc-camel-on-change="{{ onPng }}" style="display:none;">
+          <button sc-camel-on-click="{{ pickFile }}" style="font:inherit;letter-spacing:0.08em;padding:9px;background:#f2ecd8;color:#1a1410;border:0;cursor:pointer;font-weight:700;">IMPORT &amp; PIXELATE…</button>
+          <button sc-camel-on-click="{{ pickPng }}" title="Places the PNG pixel-for-pixel: no resizing, no palette change, transparency kept" style="font:inherit;letter-spacing:0.08em;padding:9px;background:#ffd86e;color:#1a1410;border:0;cursor:pointer;font-weight:700;">IMPORT PNG (EXACT)…</button>
+          <button sc-camel-on-click="{{ addScene }}" style="font:inherit;font-size:10px;padding:7px;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">ADD DOCK SCENE LAYERS</button>
+          <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid #1e1e1e;padding-top:10px;">
+            <div style="color:#777;font-size:9px;letter-spacing:0.1em;">BEFORE PIXELATING</div>
+          <button sc-camel-on-click="{{ toggleRmBg }}" title="Makes a solid background color touching the image edges transparent" style="font:inherit;font-size:9px;letter-spacing:0.1em;display:flex;justify-content:space-between;padding:7px 8px;background:#1c1c1c;color:#bbb;border:2px solid #333;cursor:pointer;"><span>REMOVE SOLID BACKGROUND</span><span style="color:{{ rmBgFg }};">{{ rmBgLabel }}</span></button>
+          <button sc-camel-on-click="{{ toggleTrim }}" title="Crops empty transparent space around the image before fitting it to the grid" style="font:inherit;font-size:9px;letter-spacing:0.1em;display:flex;justify-content:space-between;padding:7px 8px;background:#1c1c1c;color:#bbb;border:2px solid #333;cursor:pointer;"><span>TRIM TRANSPARENT EDGES</span><span style="color:{{ trimFg }};">{{ trimLabel }}</span></button>
+          <div style="color:#777;font-size:9px;letter-spacing:0.1em;">PIXEL GRID</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+            <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="2">
+              <button sc-camel-on-click="{{ b.on }}" style="font:inherit;font-size:9px;padding:7px 0;border:2px solid #333;cursor:pointer;background:{{ b.bg }};color:{{ b.fg }};">{{ b.label }}</button>
+            </sc-for>
+          </div>
+          </div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.tune.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.tune.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">IMAGE TUNING</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">SIMPLIFY PALETTE, SHARPEN AND SHAPE SHADOWS ON IMPORTS OR THE ACTIVE LAYER</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.tune.caret }}</div></button>
+        <sc-if value="{{ sec.tune.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>PALETTE COMPLEXITY</div><div style="color:#f2ecd8;">{{ impLabel }}</div></div>
+          <input type="range" min="0" max="100" step="1" value="{{ impDetail }}" sc-camel-on-change="{{ onImpDetail }}">
+          <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>SIMPLE</div><div>ORIGINAL</div></div>
+          <div style="display:flex;justify-content:space-between;gap:6px;color:#777;font-size:9px;letter-spacing:0.1em;"><div>PALETTE COMPLEXITY 2</div><div style="color:#f2ecd8;text-align:right;">{{ impFamLabel }}</div></div>
+          <input type="range" min="0" max="100" step="1" value="{{ impFam }}" sc-camel-on-change="{{ onImpFam }}">
+          <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>FLAT</div><div>ORIGINAL</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;opacity:{{ sepOp }};">
+            <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>RANGE SEPARATION</div><div style="color:#f2ecd8;">{{ impSepLabel }}</div></div>
+            <input type="range" min="0" max="100" step="1" value="{{ impSep }}" sc-camel-on-change="{{ onImpSep }}">
+            <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>FEWER</div><div>MORE RANGES</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>SHARPNESS</div><div style="color:#f2ecd8;">{{ impSharpLabel }}</div></div>
+          <input type="range" min="0" max="100" step="1" value="{{ impSharp }}" sc-camel-on-change="{{ onImpSharp }}">
+          <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>SOFT</div><div>CRISP</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;opacity:{{ tameOp }};">
+            <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>TAME HIGHLIGHTS</div><div style="color:#f2ecd8;">{{ impTameLabel }}</div></div>
+            <input type="range" min="0" max="100" step="1" value="{{ impTame }}" sc-camel-on-change="{{ onImpTame }}">
+            <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>HARSH</div><div>NO HALOS</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>DEEPEN SHADOWS</div><div style="color:#f2ecd8;">{{ impDeepLabel }}</div></div>
+          <input type="range" min="0" max="100" step="1" value="{{ impDeep }}" sc-camel-on-change="{{ onImpDeep }}">
+          <div style="display:flex;justify-content:space-between;color:#555;font-size:8px;letter-spacing:0.1em;"><div>OFF</div><div>DEEP</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;opacity:{{ deepOp }};">
+            <div style="display:flex;justify-content:space-between;color:#777;font-size:8px;letter-spacing:0.1em;"><div>DARKEN WHICH RANGES</div><div style="color:#f2ecd8;">{{ deepSelLabel }}</div></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(54px, 1fr));gap:6px;">
+              <button sc-camel-on-click="{{ deepAll }}" style="font:inherit;font-size:9px;height:22px;padding:0;border:2px solid #333;cursor:pointer;background:{{ deepAllBg }};color:{{ deepAllFg }};">ALL</button>
+              <sc-for list="{{ deepRanges }}" as="r" hint-placeholder-count="0">
+                <button sc-camel-on-click="{{ r.on }}" title="{{ r.title }}" style="display:flex;height:22px;padding:2px;border:0;cursor:pointer;background:#1c1c1c;box-shadow:{{ r.ring }};">
+                  <sc-for list="{{ r.tones }}" as="t" hint-placeholder-count="4">
+                    <div style="flex:1;height:100%;background:{{ t.c }};"></div>
+                  </sc-for>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ noRanges }}" hint-placeholder-val="{{ true }}">
+              <div style="color:#555;font-size:8px;letter-spacing:0.08em;">RANGES APPEAR WHILE ADJUSTING AN IMPORT · DARK → LIGHT</div>
+            </sc-if>
+          </div>
+          <div style="color:#666;font-size:9px;line-height:1.5;">{{ impHint }}</div>
+          <sc-if value="{{ canAdjust }}" hint-placeholder-val="{{ false }}">
+            <button sc-camel-on-click="{{ adjustLayer }}" title="Re-run the import tools on this layer's current pixels" style="font:inherit;font-size:10px;padding:7px;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">{{ adjustLabel }}</button>
+          </sc-if>
+          </div>
+        </sc-if>
+      </div>
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.ranges.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.ranges.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">RECOLOR RANGES</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">SHIFT HUE, BRIGHTNESS OR SATURATION OF WHOLE COLOR FAMILIES</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.ranges.caret }}</div></button>
+        <sc-if value="{{ sec.ranges.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>SHIFT-CLICK TO PICK SEVERAL</div><button sc-camel-on-click="{{ rngResetAll }}" style="font:inherit;font-size:8px;letter-spacing:0.1em;background:none;border:0;color:#666;cursor:pointer;padding:0;">RESET ALL</button></div>
+            <div style="color:#f2ecd8;font-size:8px;letter-spacing:0.1em;">{{ editSelLabel }}</div>
+            <sc-for list="{{ editGroups }}" as="g" hint-placeholder-count="0">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <button sc-camel-on-click="{{ g.pickAll }}" title="Select every range in this group (shift adds)" style="font:inherit;font-size:8px;letter-spacing:0.1em;text-align:left;background:none;border:0;padding:0;color:#666;cursor:pointer;">{{ g.label }}</button>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(54px, 1fr));gap:6px;">
+                  <sc-for list="{{ g.items }}" as="r" hint-placeholder-count="0">
+                    <button sc-camel-on-click="{{ r.on }}" title="{{ r.title }}" style="display:flex;height:22px;padding:2px;border:0;cursor:pointer;background:#1c1c1c;box-shadow:{{ r.ring }};">
+                      <sc-for list="{{ r.tones }}" as="t" hint-placeholder-count="4">
+                        <div style="flex:1;height:100%;background:{{ t.c }};"></div>
+                      </sc-for>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noRanges }}" hint-placeholder-val="{{ true }}">
+              <div style="color:#555;font-size:8px;letter-spacing:0.08em;">PICK A RANGE WHILE ADJUSTING AN IMPORT OR LAYER</div>
+            </sc-if>
+            <sc-if value="{{ hasEditRi }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>HUE</div><div style="color:#f2ecd8;">{{ rngHLabel }}</div></div>
+                <input type="range" min="-180" max="180" step="1" value="{{ rngH }}" sc-camel-on-change="{{ onRngH }}">
+                <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>BRIGHTNESS</div><div style="color:#f2ecd8;">{{ rngBLabel }}</div></div>
+                <input type="range" min="-100" max="100" step="1" value="{{ rngB }}" sc-camel-on-change="{{ onRngB }}">
+                <div style="display:flex;justify-content:space-between;color:#777;font-size:9px;letter-spacing:0.1em;"><div>SATURATION</div><div style="color:#f2ecd8;">{{ rngSLabel }}</div></div>
+                <input type="range" min="-100" max="100" step="1" value="{{ rngS }}" sc-camel-on-change="{{ onRngS }}">
+                <button sc-camel-on-click="{{ rngReset }}" style="font:inherit;font-size:9px;letter-spacing:0.1em;padding:6px;background:#1c1c1c;color:#bbb;border:2px solid #333;cursor:pointer;">{{ rngResetLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+      <div style="border-bottom:2px solid #262626;display:flex;flex-direction:column;">
+        <button sc-camel-on-click="{{ sec.export.toggle }}" style="font:inherit;display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 14px;background:{{ sec.export.bg }};border:0;cursor:pointer;text-align:left;color:#ddd;" style-hover="background:#181818;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;"><div style="color:#f2ecd8;letter-spacing:0.14em;font-size:10px;">EXPORT PNG</div><div style="color:#6a6a6a;font-size:8px;letter-spacing:0.06em;line-height:1.5;">SAVE THE FULL IMAGE OR THE ACTIVE LAYER</div></div><div style="color:#888;font-size:10px;padding-top:1px;">{{ sec.export.caret }}</div></button>
+        <sc-if value="{{ sec.export.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:2px 14px 16px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:4px;">
+          <sc-for list="{{ scales }}" as="s" hint-placeholder-count="4">
+            <button sc-camel-on-click="{{ s.on }}" style="font:inherit;font-size:9px;padding:6px 0;border:2px solid #333;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }};">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <div style="color:#666;font-size:9px;">{{ expSizeLabel }}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+          <button sc-camel-on-click="{{ exportAll }}" style="font:inherit;font-size:10px;padding:8px 0;background:#ffd86e;color:#1a1410;border:0;cursor:pointer;font-weight:700;">IMAGE</button>
+          <button sc-camel-on-click="{{ exportLayer }}" style="font:inherit;font-size:10px;padding:8px 0;background:#1c1c1c;color:#ddd;border:2px solid #333;cursor:pointer;">ACTIVE LAYER</button>
+        </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<!--APP SCRIPT EXTRACTED-->
+
+
+</body></html>
