@@ -61,6 +61,7 @@ Parity tests load the *original* functions from `legacy/recovered/app.js` in a N
 
 ## D-014 · Work reaches `main` through milestone pull requests · Accepted · 2026-10-29
 Owner's choice. Claude works on a branch and opens a pull request per meaningful milestone (not per small task). The owner merges. Claude never pushes to `main` directly.
+**Update (owner, 2026-10-29):** no pull requests during Phase 1. All Phase 1 work goes on `claude/pixel-studio-dev-env-u7f29w` (its open PR #1 simply grows), and the owner reviews at the end of the phase.
 
 ## D-015 · Drop the "2× game grid" import option · Accepted · 2026-10-29
 Owner's request, following D-010 (320×200 default). The IMPORT section's PIXEL GRID buttons (`1× · 320×200` / `2× · GAME GRID`) are removed, and imports fit at 1×, one image pixel per project pixel. Kept, because they aren't that button:
