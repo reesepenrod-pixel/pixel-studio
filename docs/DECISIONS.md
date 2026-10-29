@@ -44,8 +44,8 @@ Dialogue trees and the world map need a graph canvas. `@xyflow/react` is the lea
 ## D-009 · Export the game as a directory first, single-file second · Accepted · 2026-10-29
 Browsers block `fetch()` of local JSON from `file://` pages. The directory export therefore loads game data from a `<script src="game-data.js">` (data assigned to a global, never evaluated as logic), which works from `file://` and from any static host. A single-file variant inlines that script and base64 images. Both run the same `runtime.js`.
 
-## D-010 · Default logical resolution · Proposed — **needs owner input** · 2026-10-29
-The legacy editor canvas is 320×200, but its sample art and "GAME PX" readout use a 2× game grid (160×100). New projects will offer presets 160×100, 320×200, 640×400 and custom. The default preset is pending the owner's answer (IMPLEMENTATION_PLAN, Q1).
+## D-010 · Default logical resolution · Accepted · 2026-10-29
+The legacy editor canvas is 320×200, but its sample art and "GAME PX" readout use a 2× game grid (160×100). New projects will offer presets 160×100, 320×200, 640×400 and custom. **Decision (owner, 2026-10-29): new projects default to 320×200.** One editor pixel = one game pixel. The legacy "2× game grid" import option stays available for chunkier art, but it no longer defines the game resolution, and the `GAME PX` readout (which assumed 2×) is dropped in the port.
 
 ## D-011 · Ids are random prefixed strings, never names or indexes · Accepted · 2026-10-29
 `prefix_` + 12 base-36 chars from `crypto.getRandomValues`. Readable in JSON and debug output, and collision-safe enough for local projects. Duplicating or importing always mints new ids and rewrites internal references.

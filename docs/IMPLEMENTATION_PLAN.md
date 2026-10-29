@@ -82,8 +82,8 @@ spec §56 (end of Phase 3).
 - **2026-10-29 · 1.1 done.** `src/core/imaging/*` ported, plus `runTuning()` (the original `applyImport` as a pure function). Byte-identical to the original on all 5 dock layers, a 5-layer strip, and synthetic images. Changes from the original: range separation is a parameter instead of a module global; the unused `passes = 0` smoothing loop and unused parameters were dropped; `trimImage` now works on raw RGBA (`trimTransparent`, unit-tested).
 
 ## Open questions for the owner
-- **Q1. Game resolution default.** The current art uses a 160×100 game grid shown at 2× on a 320×200 canvas. Should new projects default to **160×100** or **320×200**? (Both will be available.)
-- **Q2. Existing artwork.** Is there work saved in the current Pixel Studio that must come across? If so, it's in the browser where you used it. Use EXPORT → ACTIVE LAYER at 1× for each layer before switching.
-- **Q3. Claude Design.** After migration the editor UI can't be edited in Claude Design any more. OK?
-- **Q4. Dependencies.** OK to add `zustand`, `immer`, `idb`, `fflate`, `zod` (all small and well maintained)?
+- ~~Q1. Game resolution default.~~ **Answered: 320×200** (D-010).
+- ~~Q2. Existing artwork.~~ **Answered: nothing to carry over.** Task 1.13 stays as a general "import layers from PNGs" feature, not a migration requirement.
+- **Q3. Claude Design.** (Not objected to; proceeding.) After migration the editor UI can't be edited in Claude Design any more. OK?
+- **Q4. Dependencies.** (Approved with the plan.) OK to add `zustand`, `immer`, `idb`, `fflate`, `zod` (all small and well maintained)?
 - **Q5. Git workflow.** Work on a branch and merge to `main` via pull requests per task, or commit directly to `main`?
