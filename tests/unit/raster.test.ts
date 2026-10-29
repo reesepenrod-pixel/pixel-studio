@@ -42,3 +42,22 @@ describe('sceneColors', () => {
     expect(R.sceneColors([r])).toEqual(['#0a0000', '#001400']);
   });
 });
+
+describe('clipped drawing (layers larger than the canvas)', () => {
+  it('stamp respects the clip rect', () => {
+    const r = R.createRaster(10, 10); R.stamp(r, 2, 2, 5, [1, 1, 1], { x: 2, y: 2, w: 8, h: 8 });
+    expect(px(r, 1, 1)).toEqual([0, 0, 0, 0]); expect(px(r, 2, 2)).toEqual([1, 1, 1, 255]); expect(px(r, 4, 4)).toEqual([1, 1, 1, 255]);
+  });
+  it('flood fill does not leak outside the clip rect', () => {
+    const r = R.createRaster(10, 10);
+    expect(R.floodFill(r, 5, 5, [9, 0, 0], { x: 3, y: 3, w: 4, h: 4 })).toBe(true);
+    expect(px(r, 3, 3)).toEqual([9, 0, 0, 255]); expect(px(r, 6, 6)).toEqual([9, 0, 0, 255]); expect(px(r, 2, 5)).toEqual([0, 0, 0, 0]); expect(px(r, 7, 5)).toEqual([0, 0, 0, 0]);
+    expect(R.floodFill(r, 0, 0, [9, 0, 0], { x: 3, y: 3, w: 4, h: 4 })).toBe(false);
+  });
+  it('clipped fill equals unclipped fill when the clip is the whole raster', () => {
+    const a = R.createRaster(12, 9), b = R.createRaster(12, 9);
+    for (const q of [a, b]) { R.stamp(q, 4, 0, 1, [5, 5, 5]); for (let y = 0; y < 9; y++) R.stamp(q, 6, y, 1, [5, 5, 5]); }
+    R.floodFill(a, 0, 0, [1, 2, 3]); R.floodFill(b, 0, 0, [1, 2, 3], { x: 0, y: 0, w: 12, h: 9 });
+    expect([...a.data]).toEqual([...b.data]);
+  });
+});

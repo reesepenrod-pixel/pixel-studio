@@ -1,11 +1,12 @@
 // Global palette reduction (weighted median cut), ported verbatim from the original Pixel Studio.
+import type { Pixels } from '../raster/raster';
 
 /**
  * Reduces `d` (RGBA, in place) to at most `k` colors. Also normalizes alpha: pixels under 128
  * become fully transparent black, the rest fully opaque. Returns the number of distinct opaque
  * colors before reduction.
  */
-export function quantizeData(d: Uint8ClampedArray, k: number): number {
+export function quantizeData(d: Pixels, k: number): number {
   type Col = { key: number; v: [number, number, number]; n: number };
   type Box = { items: Col[]; range: number; ch: number };
   const map = new Map<number, Col>(), cols: Col[] = [];

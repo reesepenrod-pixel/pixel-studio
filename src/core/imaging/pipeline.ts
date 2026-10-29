@@ -1,6 +1,7 @@
 // The IMAGE TUNING pipeline: the original Component.applyImport() as a pure function.
 // Order matters and matches the original exactly:
 // sharpen → find ranges → per-range tone reduction → deepen shadows → recolor → global palette reduction.
+import type { Pixels } from '../raster/raster';
 
 import { deepen } from './deepen';
 import { quantizeData, detailToK } from './quantize';
@@ -23,7 +24,7 @@ export type TuningParams = {
 export const TUNING_DEFAULTS: TuningParams = { detail: 100, family: 100, separation: 70, sharp: 0, tame: 70, deep: 0, deepSel: null, rangeAdj: {} };
 
 export type TuningResult = {
-  data: Uint8ClampedArray;  // tuned pixels, same size as the source
+  data: Pixels;  // tuned pixels, same size as the source
   uniq: number;             // distinct colors before the final reduction
   k: number;                // colors after it
   family: FamilyInfo | null;
@@ -37,7 +38,7 @@ export type TuningResult = {
  * count from the previous run on the same source (undefined on the first run). As in the
  * original, if it changed, per-range selections no longer line up and are dropped for this run.
  */
-export function runTuning(src: Uint8ClampedArray, w: number, h: number, p: TuningParams, prevRangeCount?: number): TuningResult {
+export function runTuning(src: Pixels, w: number, h: number, p: TuningParams, prevRangeCount?: number): TuningResult {
   const d = sharpen(src, w, h, p.sharp / 100 * 2.5, p.tame / 100);
   const groups = findRanges(d, rangeSepFromSlider(p.separation)), fi = familyReduce(d, p.family, groups);
   const rangeOf = fi ? fi.rangeOf : rangeMap(groups), ranges = rangeTones(d, rangeOf, 6);

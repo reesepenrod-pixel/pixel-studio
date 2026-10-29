@@ -23,9 +23,3 @@ html, body { margin: 0; background: var(--bg); overscroll-behavior: none; }
 body { color: var(--text); font-family: var(--font); font-size: 11px; letter-spacing: 0.04em; }
 canvas { image-rendering: pixelated; }
 
-.shell { height: 100vh; display: flex; flex-direction: column; }
-.topbar { display: flex; align-items: baseline; gap: 10px; padding: 10px 16px; border-bottom: 2px solid var(--border); }
-.brand { font-size: 14px; font-weight: 700; color: var(--cream); letter-spacing: 0.1em; }
-.muted { color: var(--muted); }
-.placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
-code { font-family: ui-monospace, monospace; color: var(--cream); }

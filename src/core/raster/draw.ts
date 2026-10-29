@@ -1,12 +1,20 @@
 // Drawing primitives, ported from the original Pixel Studio's Component methods
 // (stamp, stampMask, line, fill) and generalized from the fixed 320×200 canvas to any raster.
-import type { Point, Raster, RGB } from './raster';
+import type { Point, Raster, Rect, RGB } from './raster';
 
-/** Square brush of `size` px centered like the original: offset (size − 1) >> 1. `color` null erases. */
-export function stamp(r: Raster, x: number, y: number, size: number, color: RGB | null): void {
-  const o = (size - 1) >> 1, d = r.data;
+/** Intersects an optional clip rect (in raster coordinates) with the raster's bounds. */
+const clipTo = (r: { w: number; h: number }, clip?: Rect) => clip
+  ? { x0: Math.max(0, clip.x), y0: Math.max(0, clip.y), x1: Math.min(r.w, clip.x + clip.w), y1: Math.min(r.h, clip.y + clip.h) }
+  : { x0: 0, y0: 0, x1: r.w, y1: r.h };
+
+/**
+ * Square brush of `size` px centered like the original: offset (size − 1) >> 1. `color` null erases.
+ * `clip` (raster coordinates) limits painting, e.g. to the visible canvas of a layer that extends past it.
+ */
+export function stamp(r: Raster, x: number, y: number, size: number, color: RGB | null, clip?: Rect): void {
+  const o = (size - 1) >> 1, d = r.data, c = clipTo(r, clip);
   for (let j = 0; j < size; j++) for (let i = 0; i < size; i++) {
-    const X = x - o + i, Y = y - o + j; if (X < 0 || Y < 0 || X >= r.w || Y >= r.h) continue;
+    const X = x - o + i, Y = y - o + j; if (X < c.x0 || Y < c.y0 || X >= c.x1 || Y >= c.y1) continue;
     const k = (Y * r.w + X) * 4;
     if (!color) { d[k] = d[k + 1] = d[k + 2] = d[k + 3] = 0; } else { d[k] = color[0]; d[k + 1] = color[1]; d[k + 2] = color[2]; d[k + 3] = 255; }
   }
@@ -32,9 +40,11 @@ export function line(a: Point, b: Point, fn: (x: number, y: number) => void): vo
 
 /**
  * Bucket fill: 4-connected, exact color match (any fully transparent pixel matches a transparent
- * start). Paints opaque `color`. Returns false when nothing would change.
+ * start). Paints opaque `color`. Returns false when nothing would change. With `clip`, the fill
+ * never spreads outside that rect (raster coordinates).
  */
-export function floodFill(r: Raster, x: number, y: number, color: RGB): boolean {
+export function floodFill(r: Raster, x: number, y: number, color: RGB, clip?: Rect): boolean {
+  if (clip) return floodFillClipped(r, x, y, color, clipTo(r, clip));
   const d = r.data, W = r.w, N = r.w * r.h, i0 = (y * W + x) * 4, t = [d[i0], d[i0 + 1], d[i0 + 2], d[i0 + 3]], [cr, cg, cb] = color;
   if (t[3] === 255 && t[0] === cr && t[1] === cg && t[2] === cb) return false;
   const same = t[3] === 0 ? (i: number) => d[i + 3] === 0 : (i: number) => d[i] === t[0] && d[i + 1] === t[1] && d[i + 2] === t[2] && d[i + 3] === t[3];
@@ -48,6 +58,25 @@ export function floodFill(r: Raster, x: number, y: number, color: RGB): boolean 
     if (X < W - 1) st.push(p + 1);
     if (p >= W) st.push(p - W);
     if (p < N - W) st.push(p + W);
+  }
+  return true;
+}
+
+function floodFillClipped(r: Raster, x: number, y: number, color: RGB, c: { x0: number; y0: number; x1: number; y1: number }): boolean {
+  if (x < c.x0 || y < c.y0 || x >= c.x1 || y >= c.y1) return false;
+  const d = r.data, W = r.w, i0 = (y * W + x) * 4, t = [d[i0], d[i0 + 1], d[i0 + 2], d[i0 + 3]], [cr, cg, cb] = color;
+  if (t[3] === 255 && t[0] === cr && t[1] === cg && t[2] === cb) return false;
+  const same = t[3] === 0 ? (i: number) => d[i + 3] === 0 : (i: number) => d[i] === t[0] && d[i + 1] === t[1] && d[i + 2] === t[2] && d[i + 3] === t[3];
+  const seen = new Uint8Array(W * r.h), st = [y * W + x];
+  while (st.length) {
+    const p = st.pop()!; if (seen[p]) continue; seen[p] = 1;
+    const i = p * 4; if (!same(i)) continue;
+    d[i] = cr; d[i + 1] = cg; d[i + 2] = cb; d[i + 3] = 255;
+    const X = p % W, Y = (p / W) | 0;
+    if (X > c.x0) st.push(p - 1);
+    if (X < c.x1 - 1) st.push(p + 1);
+    if (Y > c.y0) st.push(p - W);
+    if (Y < c.y1 - 1) st.push(p + W);
   }
   return true;
 }

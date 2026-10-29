@@ -69,3 +69,17 @@ Owner's request, following D-010 (320×200 default). The IMPORT section's PIXEL 
 - tuning an existing layer still detects art drawn in 2×2 blocks and keeps it chunky (`beginAdjust`).
 
 The parity-tested algorithms are unaffected.
+
+## D-016 · Art workspace state: a plain controller class + `useSyncExternalStore`, no Zustand yet · Accepted · 2026-10-29
+The original kept everything in one component and drew canvases directly. The port keeps that shape as a plain `ArtController` class that React subscribes to through `useSyncExternalStore`, and the canvases are still drawn imperatively, so strokes never wait on React. Zustand and Immer (D-003, Q4) aren't needed for one document. They come in with the multi-asset project store (1.8/1.9), if they still pay for themselves then. `PixelViewport` is not extracted yet; it will be when a second workspace needs it.
+
+## D-017 · Behavior changes in the Art workspace port · Accepted · 2026-10-29
+Everything else matches the original. Each item below has a test.
+1. **Autosave** goes to IndexedDB, not localStorage, and failures are shown in the status bar ("NOT SAVED: …"), which fixes audit §4.1. A save indicator (SAVING… / SAVED) was added, and `Ctrl/⌘+S` saves immediately.
+2. **Rename** is an inline text field on double-click instead of `window.prompt`.
+3. **The `GAME PX` readout and the 2× import grid** are gone (D-010, D-015).
+4. **Layers carry their own size and offset** instead of a full-canvas buffer plus `ext`. Same behavior, with two improvements:
+   - merging keeps the upper layer's off-canvas pixels where the lower layer extends;
+   - editing a layer ends *its* tuning session, even when it isn't the active layer. The original only ended the active one's, so a stale session could later overwrite merged pixels.
+5. **Undo** keeps 100 steps (was 60), capped at 64 MB.
+6. **Unsaved changes are flushed** when the page is closed.

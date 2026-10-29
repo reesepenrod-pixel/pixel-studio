@@ -1,10 +1,11 @@
 // Unsharp-style sharpen with a highlight/shadow clamp, ported verbatim from the original Pixel Studio.
+import type { Pixels } from '../raster/raster';
 
 /**
  * Returns a sharpened copy of RGBA `src`. `amt` is the strength (0 = plain copy); `tame` (0–1)
  * pulls overshoot back toward the local 3×3 min/max so edges don't grow halos.
  */
-export function sharpen(src: Uint8ClampedArray, w: number, h: number, amt: number, tame: number): Uint8ClampedArray {
+export function sharpen(src: Pixels, w: number, h: number, amt: number, tame: number): Pixels {
   if (amt <= 0) return src.slice();
   const out = src.slice(), keep = 1 - tame;
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {

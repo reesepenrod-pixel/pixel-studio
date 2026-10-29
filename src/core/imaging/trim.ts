@@ -1,7 +1,8 @@
 // TRIM TRANSPARENT EDGES. The original worked on an Image via a canvas; this is the same rule
 // (alpha > 8 counts as content) on raw RGBA so it runs anywhere.
+import type { Pixels } from '../raster/raster';
 
-export type RgbaImage = { w: number; h: number; data: Uint8ClampedArray };
+export type RgbaImage = { w: number; h: number; data: Pixels };
 
 /** Returns the image cropped to its content, or the same object if nothing to trim or it's empty. */
 export function trimTransparent(img: RgbaImage): RgbaImage {

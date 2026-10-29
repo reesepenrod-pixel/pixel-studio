@@ -1,6 +1,7 @@
 // Material "ranges": clusters an image's colors into families (skin, wood, water…) in OKLab,
 // then optionally reduces each family to a few tones. Ported verbatim from the original
 // Pixel Studio; the only change is that range separation is a parameter instead of a global.
+import type { Pixels } from '../raster/raster';
 
 import { fromLab, rgb2hex, toLab, type Lab, type RGB } from './color';
 
@@ -32,7 +33,7 @@ export const rangeSepFromSlider = (v: number): number => 0.25 - v / 100 * 0.22;
  * Groups the opaque colors of RGBA `d` into material ranges. `rangeSep` is the merge distance
  * (smaller = more ranges). Returns null when the image has no opaque pixels.
  */
-export function findRanges(d: Uint8ClampedArray, rangeSep: number): RangeGroups | null {
+export function findRanges(d: Pixels, rangeSep: number): RangeGroups | null {
   const map = new Map<number, RangeColor>(), cols: RangeColor[] = [];
   for (let i = 0; i < d.length; i += 4) {
     if (d[i + 3] < 128) continue;
@@ -86,7 +87,7 @@ export function rangeMap(groups: RangeGroups | null): RangeOf {
  * PALETTE COMPLEXITY 2: reduces each range to `T = round(64^(v/100))` tones (in place).
  * `v >= 100` means off and returns null. The returned `rangeOf` maps the *new* colors to ranges.
  */
-export function familyReduce(d: Uint8ClampedArray, v: number, groups: RangeGroups | null): FamilyInfo | null {
+export function familyReduce(d: Pixels, v: number, groups: RangeGroups | null): FamilyInfo | null {
   if (v >= 100 || !groups) return null;
   const rangeOf: RangeOf = new Map();
   const fams = new Map(groups.map((g, i) => [i, g.slice()] as const));
@@ -101,7 +102,7 @@ export function familyReduce(d: Uint8ClampedArray, v: number, groups: RangeGroup
 }
 
 /** Summarizes each range: pixel count, distinct tones, average OKLCh, and up to `n` sample tones dark → light. */
-export function rangeTones(d: Uint8ClampedArray, rangeOf: RangeOf, n: number): RangeInfo[] {
+export function rangeTones(d: Pixels, rangeOf: RangeOf, n: number): RangeInfo[] {
   const per = new Map<number, Map<number, number>>();
   for (let i = 0; i < d.length; i += 4) {
     if (d[i + 3] < 128) continue;

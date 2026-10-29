@@ -1,4 +1,5 @@
 // Solid-background removal, ported verbatim from the original Pixel Studio.
+import type { Pixels } from '../raster/raster';
 
 export type Rect = { x: number; y: number; w: number; h: number };
 
@@ -7,7 +8,7 @@ export type Rect = { x: number; y: number; w: number; h: number };
  * flood-fills from the rect's edges and makes every connected near-matching pixel transparent.
  * Works in place on RGBA `d` of width `w`. Returns the number of pixels cleared.
  */
-export function removeBg(d: Uint8ClampedArray, w: number, h: number, r: Rect, tol: number): number {
+export function removeBg(d: Pixels, w: number, h: number, r: Rect, tol: number): number {
   const at = (x: number, y: number) => (y * w + x) * 4;
   const cs = [at(r.x, r.y), at(r.x + r.w - 1, r.y), at(r.x, r.y + r.h - 1), at(r.x + r.w - 1, r.y + r.h - 1)];
   if (cs.some(i => d[i + 3] < 128)) return 0;

@@ -25,12 +25,12 @@ Phase goals and acceptance criteria for 2–7 are as written in the master speci
 behavior, on top of a real project model with reliable local persistence and portable files.
 
 **Phase acceptance criteria** (from spec §41, made checkable):
-- [ ] Legacy baseline browser checks pass against the new Art workspace, the same 30 that pass on the original.
+- [x] Legacy baseline browser checks pass against the new Art workspace, the same 30 that pass on the original (`tests/e2e/art.spec.ts`), and the 31st, the storage defect, is fixed and has its own test.
 - [x] Ported imaging algorithms produce byte-identical output to the originals (parity suite: 57 tests, incl. the full tuning pipeline on the dock art; verified to fail on a one-constant change).
 - [ ] A project can be created, artwork drawn, the page reloaded, and the project reopened intact.
 - [ ] Art assets have stable ids that survive reload, rename, export/import.
 - [ ] A project survives export → delete → import with identical pixels and metadata.
-- [ ] A forced storage-quota error is shown to the user, and nothing is silently lost.
+- [x] A forced storage-quota error is shown to the user, and nothing is silently lost (e2e "save failures are shown"). Re-verify when the project store replaces the interim draft store in 1.9.
 - [ ] `npm run check` (typecheck + unit + parity) and `npm run e2e` pass.
 
 ### Tasks
@@ -42,11 +42,11 @@ Each task is one commit (or a small series), independently testable, and leaves 
 | 1.0 ✅ | **Scaffold**: Vite + React + TS strict, Vitest, Playwright, `npm run dev/check/e2e/build`, CI-less local scripts, import-boundary lint rule (`engine` ↛ editor/React) | — | empty app builds; a sample unit test, a parity smoke test and an e2e smoke test run | low |
 | 1.1 ✅ | **Port pure imaging algorithms** to `src/core/imaging/*.ts`: quantizeData, removeBg, sharpen, OKLab, mcut, findRanges (with `rangeSep` as a parameter instead of a global), familyReduce, rangeTones, deepen, adjustRanges, detailToK, trim | 1.0 | parity tests: original (loaded from `legacy/recovered/app.js`) vs. port give identical bytes on the 5 dock layers and synthetic images | **med**: color math drift |
 | 1.2 ✅ | **Raster core** `src/core/raster`: `Raster {w,h,data}`, stamp, Bresenham line, flood fill, mask stamp, layer-with-offset compositor generalized from 320×200 | 1.0 | unit + parity tests (compositor vs. legacy at 320×200); works for arbitrary sizes | low |
-| 1.3 | **Design tokens + shared UI kit**: `tokens.css` (exact legacy colors, Silkscreen, spacing), `Section` (collapsible with caption), `Slider`, `ToggleRow`, `SegButton`, `Swatch`, pixel icons | 1.0 | visual check against legacy screenshot | low |
-| 1.4 | **PixelViewport** component: 3 stacked canvases, integer zoom 1–12, auto-fit, ctrl-wheel/pinch zoom at pointer, grid overlay, cursor preview, pointer → pixel mapping | 1.2, 1.3 | e2e: zoom, grid, coordinate readout | med |
-| 1.5 | **Art workspace port (paint view)**: tools rail, pencil/eraser/bucket/dropper/move incl. resize handles and nudge, color & brush, recent and scene palette, layers panel, export PNG. Same shortcuts. Rename via inline edit instead of `prompt()` | 1.4 | baseline probes (core set) pass on the new app | **med**: behavior drift |
-| 1.6 | **Art workspace port (clip view + import + tuning + recolor)** | 1.1, 1.5 | remaining baseline probes pass; tuning parity on the dock layer | **med** |
-| 1.7 | **History service**: per-document undo/redo for raster and structural edits; 100-entry / 64 MB cap | 1.5 | unit tests for every command type; e2e undo/redo | low |
+| 1.3 ✅ | **Design tokens + shared UI kit**: `tokens.css` (exact legacy colors, Silkscreen, spacing), `Section` (collapsible with caption), `Slider`, `ToggleRow`, `SegButton`, `Swatch`, pixel icons | 1.0 | visual check against legacy screenshot | low |
+| 1.4 ✅ | **PixelViewport** component: 3 stacked canvases, integer zoom 1–12, auto-fit, ctrl-wheel/pinch zoom at pointer, grid overlay, cursor preview, pointer → pixel mapping | 1.2, 1.3 | e2e: zoom, grid, coordinate readout | med |
+| 1.5 ✅ | **Art workspace port (paint view)**: tools rail, pencil/eraser/bucket/dropper/move incl. resize handles and nudge, color & brush, recent and scene palette, layers panel, export PNG. Same shortcuts. Rename via inline edit instead of `prompt()` | 1.4 | baseline probes (core set) pass on the new app | **med**: behavior drift |
+| 1.6 ✅ | **Art workspace port (clip view + import + tuning + recolor)** | 1.1, 1.5 | remaining baseline probes pass; tuning parity on the dock layer | **med** |
+| 1.7 🟡 | **History service**: per-document undo/redo for raster and structural edits; 100-entry / 64 MB cap | 1.5 | unit tests for every command type; e2e undo/redo | low |
 | 1.8 | **Project schema v1** (Zod) + ids + migration framework (`v0` = legacy localStorage JSON → v1) + integrity validator | 1.0 | unit: valid/invalid fixtures, duplicate ids, missing blobs, bad dimensions, future schemaVersion → readable errors | low |
 | 1.9 | **IndexedDB ProjectStore**: projects/blobs/backups/meta stores, debounced autosave, atomic write order, orphan-blob GC, save-status badge, quota error dialog, `Ctrl/⌘+S` | 1.7, 1.8 | unit (fake-indexeddb) + e2e: reload restores; simulated quota error is shown | med |
 | 1.10 | **Project manager screen**: create (name + resolution preset), open recent, rename, duplicate, delete with confirm | 1.9 | e2e covering each | low |
@@ -81,6 +81,17 @@ spec §56 (end of Phase 3).
 - **2026-10-29 · 1.0 done.** Vite 8 + React 18.3.1 + TS 5.9 strict, Vitest 5, Playwright 1.63. `npm run dev | check | e2e | build | legacy:baseline`. The import-boundary rule is a unit test (`tests/unit/boundaries.test.ts`), with no ESLint needed. The app shell is a placeholder that says so.
 - **2026-10-29 · 1.1 done.** `src/core/imaging/*` ported, plus `runTuning()` (the original `applyImport` as a pure function). Byte-identical to the original on all 5 dock layers, a 5-layer strip, and synthetic images. Changes from the original: range separation is a parameter instead of a module global; the unused `passes = 0` smoothing loop and unused parameters were dropped; `trimImage` now works on raw RGBA (`trimTransparent`, unit-tested).
 - **2026-10-29 · 1.2 done.** `src/core/raster`: Raster type, crop, nearest-neighbor scale, content bounds, stamp, mask stamp, Bresenham line, flood fill, offset-aware compositor, scene palette. Parity with the original `composite`, `stamp`, `stampMask`, `line`, `fill`, `layerBox`, `scaleSrc` at 320×200 (dock art + synthetic, edges, opacity, hidden layers). Unit tests cover other sizes and offsets. Layers now carry their own size and offset, which replaces the original's off-canvas `ext` buffers.
+- **2026-10-29 · 1.3–1.6 done; 1.7 partly.** The whole original editor runs in the new app (`src/editors/art`): same layout, wording, colors, font, icons and shortcuts. Structure:
+  - `doc.ts` holds layers, pixels, the mask and history. Each layer is a raster at an offset, always covering the canvas, which replaces `ext`.
+  - `controller.ts` holds all the behavior.
+  - `ArtWorkspace.tsx` and `panels.tsx` are the UI.
+  - `io.ts` handles browser decoding, the downscaler and downloads.
+
+  The canvas stack lives inside the workspace rather than in a separate reusable `PixelViewport` component. It gets extracted when the Scene Builder needs it, rather than guessing its API now (D-016).
+  - **Tests:** `tests/e2e/art.spec.ts` repeats every legacy-baseline step on the new app. It also covers rename, reorder, resize handles, cut and select-ops, a 1400×1400 import that saves and reloads with its off-canvas pixels, a forced quota error being shown, and the absence of the 2× option. `tests/unit/artDoc.test.ts` covers the document model.
+  - **Undo:** 100 steps or 64 MB, per document (1.7). What's left for 1.7: it becomes per-asset when multiple assets exist (1.11).
+  - **Autosave is interim:** `src/core/persistence/draftStore.ts` uses IndexedDB, reports errors, and shows SAVING… / SAVED / NOT SAVED in the status bar. `Ctrl/⌘+S` saves now. The project store in 1.9 replaces it.
+  - **Changes from the original:** see D-015 to D-017.
 
 ## Open questions for the owner
 - ~~Q1. Game resolution default.~~ **Answered: 320×200** (D-010).

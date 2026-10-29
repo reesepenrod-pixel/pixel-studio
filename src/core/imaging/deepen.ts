@@ -1,10 +1,11 @@
 // DEEPEN SHADOWS, ported verbatim from the original Pixel Studio.
+import type { Pixels } from '../raster/raster';
 import { fromLab, toLab, type Lab, type RGB } from './color';
 import type { RangeOf } from './ranges';
 
 // Dark part of a range = tones below the midpoint of that range's own lightness span.
 // Darkest tone moves most; tones near the midpoint move least; light half untouched.
-export function deepen(d: Uint8ClampedArray, amt: number, rangeOf: RangeOf | null, sel: Set<number> | null): void {
+export function deepen(d: Pixels, amt: number, rangeOf: RangeOf | null, sel: Set<number> | null): void {
   if (amt <= 0 || !rangeOf) return;
   const per = new Map<number, Set<number>>();
   for (let i = 0; i < d.length; i += 4) {

@@ -15,13 +15,13 @@ isn't hosted anywhere.
 - `docs/DECISIONS.md`: add an entry for every significant technical decision or new dependency
 
 ## Current state
-Phase 1 approved and in progress. Tasks 1.0–1.2 are done (scaffold, imaging port, raster core); next is 1.3 (design tokens + UI kit), then 1.4–1.6 (editor port).
+Phase 1 approved and in progress. Tasks 1.0–1.6 are done: the original editor fully runs in the new app (`npm run dev`). Next is 1.8 (project schema), then 1.9 (IndexedDB project store, replacing the interim `draftStore`).
 The progress log is at the bottom of `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Layout
 - `Pixel Studio.html`: the original app. **Never edit it.** It's the reference implementation.
 - `legacy/recovered/`: readable source extracted from it (`app.js` = all logic, `template.html` = UI markup, `assets/`). Regenerate with `python3 -I tools/unbundle.py "Pixel Studio.html" <outdir>`.
-- `src/`: the new app (layout in ARCHITECTURE §4). `src/core/imaging` is the ported image pipeline.
+- `src/`: the new app (layout in ARCHITECTURE §4). `src/core/imaging` = ported image pipeline; `src/core/raster` = pixels and compositing; `src/editors/art` = the Art workspace (`doc.ts` model, `controller.ts` behavior, `ArtWorkspace.tsx` and `panels.tsx` UI).
 - `tests/unit`, `tests/parity` (port vs. original, byte for byte), `tests/e2e` (Playwright on the new app), `tests/legacy-baseline` (Playwright on the original HTML; 30 pass + 1 known defect).
 
 ## Commands

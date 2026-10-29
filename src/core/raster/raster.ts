@@ -1,7 +1,9 @@
 // A raster is a block of RGBA pixels of any size. Everything in Pixel Studio that holds pixels
 // (art layers, masks rendered for display, sprite frames) is built on this.
 
-export type Raster = { w: number; h: number; data: Uint8ClampedArray };
+/** RGBA bytes backed by a plain ArrayBuffer (what ImageData and IndexedDB accept). */
+export type Pixels = Uint8ClampedArray<ArrayBuffer>;
+export type Raster = { w: number; h: number; data: Pixels };
 export type Point = { x: number; y: number };
 export type Rect = { x: number; y: number; w: number; h: number };
 export type RGB = readonly [number, number, number];

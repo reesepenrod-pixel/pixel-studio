@@ -1,4 +1,5 @@
 // RECOLOR RANGES, ported verbatim from the original Pixel Studio.
+import type { Pixels } from '../raster/raster';
 import { fromLab, toLab, type RGB } from './color';
 
 /** Hue in degrees (−180…180), brightness and saturation in −100…100. Missing = 0. */
@@ -8,7 +9,7 @@ export type RangeAdjust = { h?: number; b?: number; s?: number };
  * Applies per-range hue/brightness/saturation shifts in place. `pr[p]` is the range index of
  * pixel `p` (−1 = none), captured *before* deepening so recoloring follows the original ranges.
  */
-export function adjustRanges(d: Uint8ClampedArray, pr: Int16Array, adj: Record<number, RangeAdjust | undefined>): void {
+export function adjustRanges(d: Pixels, pr: Int16Array, adj: Record<number, RangeAdjust | undefined>): void {
   const cache = new Map<number, RGB>();
   for (let p = 0, i = 0; i < d.length; i += 4, p++) {
     const ri = pr[p]; if (ri < 0) continue; const A = adj[ri]; if (!A || (!A.h && !A.b && !A.s)) continue;
