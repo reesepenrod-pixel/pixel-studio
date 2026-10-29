@@ -1,5 +1,5 @@
 const { chromium } = require('playwright'); const path = require('path'), fs = require('fs');
-const FILE = 'file://' + path.resolve(process.argv[2]); const OUT = process.argv[3];
+const FILE = 'file://' + path.resolve(process.argv[2]); const OUT = process.argv[3]; fs.mkdirSync(OUT, { recursive: true });
 const ok = (k, v, n) => console.log((v ? 'PASS ' : 'FAIL ') + k + (n ? ' — ' + n : ''));
 (async () => {
   const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
